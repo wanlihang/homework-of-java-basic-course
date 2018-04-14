@@ -1,0 +1,32 @@
+package exercise;
+
+public class E629 
+{
+	public static boolean IsPrime(int number)
+	{
+		for(int divisor=2;divisor<=number/2;divisor++)//存在2~number/2内的数能被整除，则不是素数
+		{
+			if(number%divisor==0)
+		    return false;    
+		}
+		return true;
+    }
+	public static void main(String[] arges)
+	{
+		int first = 2;//第一个素数为2
+		int number = 3;
+        System.out.println("前1000以内的双素数为：");
+        while(number<1000){
+            if(IsPrime(number))
+            {
+                int second = number;
+                if(second-first==2)
+                {
+                	System.out.println("("+first+","+second+")");
+                }
+                first=second;
+            }
+            number++;
+        }
+	}
+}
