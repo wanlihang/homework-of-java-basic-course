@@ -1,0 +1,71 @@
+package test;
+
+import java.util.Scanner;
+
+public class Test1
+{
+   public static String numtocn(double nums)//12位整数，2位小数以内的中文大小写转换
+    {
+	   	char[] digit = { '零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖' }; // 中文大写数字表示
+        char[] a = { '拾', '佰', '仟' }; // 将12位整数分为3段，每段之内有十百千
+        char[] b = { '万', '亿' }; // 每段有万，亿
+        long temp = (long) (nums * 100); // 转化成整形
+        String pre = String.valueOf(temp/100); // 取整数部分
+        String prefix = ""; // 整数部分转化的结果
+        String suffix = ""; // 小数部分转化的结果
+        if (temp % 100 == 0) // 如果小数部分为0，小数部分变成整
+        {
+            suffix = "整"; 
+        }
+        else
+        {
+            suffix = digit[(int)((nums*10) % 10)] + "角" + digit[(int)((nums*100) % 10)] + "分"; // 把角分转化出来
+        }
+        char[] cpre = pre.toCharArray(); // 把整数部分字符串转化成字符数组
+        char zero = '0'; // 标志'0'表示出现过0
+        int zeronum = 0; // 连续出现0的次数
+        for (int i = 0; i < cpre.length; i++)// 循环处理每个数字
+        { 
+            int index1 = (cpre.length - i - 1) % 4; // 取当前这位数在该段内的位置
+            int index2 = (cpre.length - i - 1) / 4; // 取该数字所在段的位置
+            if (cpre[i] == '0') // 0处做判断，有两个0只输出一个
+            {
+                zeronum++; // 超过两个0，次数加1
+                if (zero == '0')
+                {
+                    zero = digit[0];//使用zero保存第一个输出的0
+                }
+                else if (index1 == 0 && index2 > 0 && zeronum < 4)//如果
+                {
+                    prefix += b[index2 - 1];//整数部分
+                    zero = '0';//zero初始化
+                }
+                continue;//若当前数字为0，程序于此停止向下运行，重头开始
+            }
+            zeronum = 0; // 不连续为0时，0的计算次数清零，初始化
+            if (zero != '0')
+            { 
+                prefix += zero;// 如果0的标志位不为0,则加上万或亿
+                zero = '0';//初始化
+            }
+            prefix += digit[cpre[i] - '0'];//将字符数组转换为字符串型，再添加到整数部分中
+            if (index1 > 0)
+                prefix += a[index1 - 1];//不为0时正常输出中文大写数字
+            if (index1 == 0 && index2 > 0)
+            {
+                prefix += b[index2 - 1]; // 每段结束位置加上段名万或亿
+            }
+        }
+        if (prefix.length() > 0)
+            prefix += '元'; // 整数部分结束后加上元
+        return prefix + suffix; // 返回整数和小数部分的结果
+    }
+   public static void main(String[] arges)
+   {
+	   Scanner input = new Scanner(System.in);
+	   System.out.println("请输入数字(万亿以下，小数两位以内)：");
+	   double nums = input.nextDouble();
+	   System.out.println(numtocn(nums));
+	   input.close();
+   }
+}
