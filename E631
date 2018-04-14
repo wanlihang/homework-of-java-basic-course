@@ -1,0 +1,76 @@
+package exercise;
+
+import java.util.Scanner;
+
+public class E631 {
+	public static boolean isValid(long number)
+	{
+		if((sumOfDoubleEvenPlace(number) + sumOfOddPlace(number)) % 10 == 0 && prefixMatched(number,4) && prefixMatched(number,5)
+				&& prefixMatched(number,37) && prefixMatched(number,6) && getSize(number) > 12 && getSize(number) < 17)//符合所有条件
+			return true;
+		else
+			return false;
+	}
+	public static int sumOfDoubleEvenPlace(long number)
+	{
+		int sum = 0 , temp = 0;
+		while(number != 0)
+		{
+			temp = (int)(number % 10);
+			number = number / 10;
+			temp = getDigit(temp);
+			sum += temp;
+		}
+		return sum;
+	}
+	public static int getDigit(int number)
+	{
+		int temp = number * 2;
+		if(temp < 10)
+			return temp;
+		else
+			return (temp % 10 + temp / 10);
+	}
+	public static int sumOfOddPlace(long number)
+	{
+		int sum = 0;
+		while(number != 0)
+		{
+			sum += (number % 10);
+			number = number / 100;
+		}
+		return sum;
+	}
+	public static boolean prefixMatched(long number , int d)
+	{
+		if(getPrefix(number,1) == d || getPrefix(number,2) == d)
+			return true;
+		return false;
+	}
+	public static int getSize(long d)
+	{
+		int size = 0;
+		while(d != 0)
+		{
+			size ++;
+			d = d / 10;
+		}
+		return size;
+	}
+	public static long getPrefix(long number , int k)
+	{
+		long prefix = number % (10 * (getSize(number) - k));
+		return prefix;
+	}
+	public static void main(String[] arges)
+	{
+		Scanner imput = new Scanner(System.in);
+		System.out.println("Enter a credit card number as a long integer:");
+		long number = imput.nextLong();
+		if(isValid(number))
+			System.out.println(number + " is valid");
+		else
+			System.out.println(number + " is invalid");
+		imput.close();
+	}
+}
