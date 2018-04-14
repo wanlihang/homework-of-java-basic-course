@@ -1,0 +1,39 @@
+package exercise;
+
+import java.util.Scanner;
+
+public class E534 
+{
+	public static int srpGame(int number)
+	{
+		String[] srp = {"scissor","rock","paper"}; 
+		String[] result = {"You won","It is a draw","You lost"};
+		int rnd =(int)(Math.random() * 3);//随机数
+		System.out.println("The computer is " + srp[rnd] + ". You are " + srp[number] + (number == rnd ? " too. " : ". ") + 
+				((number - rnd == 1 || number - rnd == -2) ? result[0] : number == rnd ? result[1] : result[2]));//胜；平局；负
+		return ((number - rnd == 1 || number - rnd == -2) ? 0 : number == rnd ? 1 : 2);
+	}
+	public static void main(String[] arges)
+	{
+		Scanner imput = new Scanner(System.in);
+		int count1 = 0 , count2 = 0;//计数器，记录用户和计算机获胜次数
+		while(count1 < 2 && count2 < 2)//赢2次或以上结束游戏
+		{
+			System.out.print("scissor(0),rock(1),paper(2):");
+			int number = imput.nextInt();//用户输入
+			int temp=srpGame(number);
+			if(temp == 0)
+			{
+				count1 ++;
+				count2 = 0;
+			}
+			if(temp == 2)
+			{
+				count2 ++;
+				count1 = 0;
+			}
+		}
+		System.out.println("Game Over!");
+		imput.close();
+	}
+}
